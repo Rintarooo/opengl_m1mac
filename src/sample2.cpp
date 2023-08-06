@@ -34,7 +34,7 @@ void idle(void){
 void display(void){
   int i;
   static int r = 0; // 回転角
-  glClear(GL_COLOR_BUFFER_BIT);
+  glClear(GL_COLOR_BUFFER_BIT);//背景色で塗る
   glLoadIdentity();
 
   // 視点位置と視線方向
