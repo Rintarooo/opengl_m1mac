@@ -11,7 +11,7 @@ include_directories(
 	# ${GLEW_INCLUDE_DIR}
 )
 
-add_executable(main src/sample2.cpp)
+add_executable(main src/sample3.cpp)
 
 target_link_libraries(main 
 	${OPENGL_LIBRARIES}
