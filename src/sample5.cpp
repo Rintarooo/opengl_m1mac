@@ -50,11 +50,11 @@ void resize(int w, int h){
   glLoadIdentity(); // 変換行列の初期化
   
   // スクリーン上の表示域をビューポートの大きさに比例させる
-  glOrtho(-w / 400.0, w / 400.0, -h / 400.0, h /400.0, -1.0, 1.0);
+  // glOrtho(-w / 400.0, w / 400.0, -h / 400.0, h /400.0, -1.0, 1.0);
   // (-near, -far)=(-1.0, 1.0), near=1.0, far=-1.0, z軸の+1(near)から-1(far)までのビューボリュームを描く。 
   
   // https://atelier-yoka.com/dev_android/p_main.php?file=apiglugluperspective
-  // gluPerspective(100.0, aspect, 0.1, 10); // near > 0, far > 0
+  gluPerspective(100.0, aspect, 0.1, 10); // near > 0, far > 0
   // aspect = w/h
 
     // モデルビュー行列に戻す
