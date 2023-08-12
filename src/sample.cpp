@@ -1,9 +1,9 @@
 
 // deform_disp.c   図形の描画　//以下はコメント
 
-// #include <GL/glut.h> // GLUTライブラリを使用
+#include <GL/glut.h> // GLUTライブラリを使用
 // https://github.com/jasper-software/jasper/issues/100
-#include <glut.h> // GLUTライブラリを使用
+// #include <glut.h> // GLUTライブラリを使用
 
 void display(void) // 表示関数
 {

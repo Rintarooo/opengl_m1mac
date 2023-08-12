@@ -9,9 +9,10 @@ include_directories(
 	${OPENGL_INCLUDE_DIR}
 	${GLUT_INCLUDE_DIR}
 	# ${GLEW_INCLUDE_DIR}
+	include/
 )
 
-add_executable(main src/sample6.cpp)
+add_executable(main src/sample9.cpp)
 
 target_link_libraries(main 
 	${OPENGL_LIBRARIES}

@@ -1,6 +1,9 @@
 # OpenGL on Mac M1
 
-you need to install XQuartz on Mac for GUI
+you need to install [XQuartz](https://www.xquartz.org/) on Mac for GUI(X11 forward)
+
+
+launch Xquartz. Go to Preference -> Security, click the box Allow connections from clients
 
 ## local on M1 Mac
 ```bash
@@ -19,6 +22,9 @@ docker-compose -f .devcontainer/docker-compose.yml build m1mac-opengl
 # xhost local:root
 xhost +localhost
 xhost + local:
-defaults write org.xquartz.X11 enable_iglx -bool YES
-docker-compose -f .devcontainer/docker-compose.yml run m1mac-opengl /bin/bash
+# defaults write org.xquartz.X11 enable_iglx -bool YES
+docker-compose -f .devcontainer/docker-compose.yml run --rm m1mac-opengl /bin/bash
+xeyes
+glxgears
+
 ```
