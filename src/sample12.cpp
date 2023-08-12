@@ -1,8 +1,13 @@
-// #include <glut.h>
-#include <GL/glut.h> 
+#include <GL/glut.h>
 #include <cmath>
 
 float angle = 0.0;
+unsigned int num_points = 8;
+double point[][3] = {{1.0, 1.0, -1.0}, {-1.0, 1.0, -1.0}, {-1.0, -1.0, -1.0}, {1.0, -1.0, -1.0}, {1.0, 1.0, 1.0}, {-1.0, 1.0, 1.0}, {-1.0, -1.0, 1.0}, {1.0, -1.0, 1.0}};
+// unsigned int num_quads = 6;
+// unsigned int quad[][4] = {{3, 2, 1, 0}, {0, 1, 5, 4}, {1, 2, 6, 5}, {2, 3, 7, 6}, {3, 0, 4, 7}, {4, 5, 6, 7}};
+unsigned int num_triangles = 12;
+unsigned int triangle[][3] = {{3, 2, 1}, {3, 1, 0}, {0, 1, 5}, {0, 5, 4}, {1, 2, 6}, {1, 6, 5}, {2, 3, 7}, {2, 7, 6}, {3, 0, 4}, {3, 4, 7}, {4, 5, 6}, {4, 6, 7}};
 
 void display() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);//背景色で塗る
@@ -28,12 +33,23 @@ void display() {
               look_at[0], look_at[1], look_at[2],
               yUp[0], yUp[1], yUp[2]);
 
-    glColor3f(0.0, 0.0, 0.0);
-    // glutSolidCube(1.0);
-    glutWireCube(1.0);
-    // glutSolidSphere( GLdouble radius, GLdouble slices, GLdouble stacks ); 
-    glColor3f(0.0, 0.0, 0.0);
-    glutWireSphere(0.5, 15, 15); 
+    // glColor3f(0.0, 0.0, 0.0);
+    // // glutSolidCube(1.0);
+    // glutWireCube(1.0);
+    // // glutSolidSphere( GLdouble radius, GLdouble slices, GLdouble stacks ); 
+    // glColor3f(0.0, 0.0, 0.0);
+    // glutWireSphere(0.5, 15, 15); 
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glBegin(GL_TRIANGLES);
+	for (int i = 0; i < num_triangles; i++) {
+		// normal(point[triangle[i][0]], point[triangle[i][1]], point[triangle[i][2]], nrml_vec);
+		// glNormal3dv(nrml_vec);
+		glVertex3dv(point[triangle[i][0]]);
+		glVertex3dv(point[triangle[i][1]]);
+		glVertex3dv(point[triangle[i][2]]);
+	}
+	glEnd();
+
 
     // glMatrixMode(GL_PROJECTION);
     // glLoadIdentity(); // 変換行列の初期化

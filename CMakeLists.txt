@@ -12,7 +12,8 @@ include_directories(
 	include/
 )
 
-add_executable(main src/sample9.cpp)
+add_executable(main src/sample14.cpp)
+# add_executable(main src/camera_move.cpp)
 
 target_link_libraries(main 
 	${OPENGL_LIBRARIES}

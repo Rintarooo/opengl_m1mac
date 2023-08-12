@@ -1,8 +1,13 @@
-// #include <glut.h>
-#include <GL/glut.h> 
+#include <GL/glut.h>
 #include <cmath>
 
 float angle = 0.0;
+unsigned int num_points = 8;
+double point[][3] = {{1.0, 1.0, -1.0}, {-1.0, 1.0, -1.0}, {-1.0, -1.0, -1.0}, {1.0, -1.0, -1.0}, {1.0, 1.0, 1.0}, {-1.0, 1.0, 1.0}, {-1.0, -1.0, 1.0}, {1.0, -1.0, 1.0}};
+// unsigned int num_quads = 6;
+// unsigned int quad[][4] = {{3, 2, 1, 0}, {0, 1, 5, 4}, {1, 2, 6, 5}, {2, 3, 7, 6}, {3, 0, 4, 7}, {4, 5, 6, 7}};
+unsigned int num_triangles = 12;
+unsigned int triangle[][3] = {{3, 2, 1}, {3, 1, 0}, {0, 1, 5}, {0, 5, 4}, {1, 2, 6}, {1, 6, 5}, {2, 3, 7}, {2, 7, 6}, {3, 0, 4}, {3, 4, 7}, {4, 5, 6}, {4, 6, 7}};
 
 void display() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);//背景色で塗る
@@ -19,8 +24,8 @@ void display() {
     この例では、y座標は3.0で一定です。これにより、カメラは立方体の上方から見下ろすような視点が維持されます。
     このように、極座標系から直交座標系への変換を行うことで、カメラが原点を中心に円軌道を描いて回転するような動きが実現されます
     */
-    float camera_position[] = {5.0 * cos(angle), 4.0, 5.0 * sin(angle)};
-    float look_at[] = {0.0f, 0.0f, 0.0f};
+    float camera_position[] = {5, 5, 5};
+    float look_at[] = {-1.0f, -1.0f, -1};
     float yUp[]={0.0, 1.0, 0.0};
 
     // gluLookAt(5.0 * cos(angle), 3.0, 5.0 * sin(angle), 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
@@ -28,12 +33,23 @@ void display() {
               look_at[0], look_at[1], look_at[2],
               yUp[0], yUp[1], yUp[2]);
 
-    glColor3f(0.0, 0.0, 0.0);
-    // glutSolidCube(1.0);
-    glutWireCube(1.0);
-    // glutSolidSphere( GLdouble radius, GLdouble slices, GLdouble stacks ); 
-    glColor3f(0.0, 0.0, 0.0);
-    glutWireSphere(0.5, 15, 15); 
+    // glColor3f(0.0, 0.0, 0.0);
+    // // glutSolidCube(1.0);
+    // glutWireCube(1.0);
+    // // glutSolidSphere( GLdouble radius, GLdouble slices, GLdouble stacks ); 
+    // glColor3f(0.0, 0.0, 0.0);
+    // glutWireSphere(0.5, 15, 15); 
+	glBegin(GL_TRIANGLES);
+	for (int i = 0; i < num_triangles; i++) {
+		// normal(point[triangle[i][0]], point[triangle[i][1]], point[triangle[i][2]], nrml_vec);
+		// glNormal3dv(nrml_vec);
+        glColor3f(0.0, 0.0, 255* i / num_triangles);
+		glVertex3dv(point[triangle[i][0]]);
+		glVertex3dv(point[triangle[i][1]]);
+		glVertex3dv(point[triangle[i][2]]);
+	}
+	glEnd();
+
 
     // glMatrixMode(GL_PROJECTION);
     // glLoadIdentity(); // 変換行列の初期化
@@ -43,24 +59,7 @@ void display() {
     glutSwapBuffers();
 }
 
-void timer(int value) {
-    // angle += 0.02f; // カメラの回転速度を2倍にする
-    angle += 0.10;
 
-    // 角度 angle から 2π（360度）を減算して、角度を 0 から 2π の範囲に戻します。
-    // これにより、角度が無限に大きくならず、常に一周の範囲内で回転することが保証されます。
-    if (angle > 2 * M_PI) {
-        angle -= 2 * M_PI;
-    }
-
-    // 要するに、`glutDisplayFunc(display); は display` 関数を描画のコールバック関数として登録する役割があり、
-    // `glutPostRedisplay(); は登録された display` コールバック関数を呼び出してウィンドウを再描画する役割があります。
-    // 両者は連携して、ウィンドウの描画と更新を適切に行うことができます。
-    glutPostRedisplay();
-    // この例では、`glutTimerFunc(16, timer, 0); としています。つまり、16ミリ秒後に timer` 関数が再び実行され、
-    // この例では、16ミリ秒ごとに timer 関数が実行されるため、約60FPS（1秒間に約60回の更新）のアニメーションが実現されます。
-    glutTimerFunc(16, timer, 0);
-}
 
 void resize(int w, int h){
     // ウィンドウが非常に狭くなるのを防ぐ
@@ -112,12 +111,6 @@ int main(int argc, char** argv) {
     glutDisplayFunc(display);
 
     glutReshapeFunc(resize);
-
-
-    // 1. unsigned int millis: 最初の引数は、コールバック関数が実行されるまでの待機時間（ミリ秒単位）を指定します。この例では、`0` が指定されているため、コールバック関数は即座に実行されます。
-    // 2. void (*func)(int value): 2番目の引数は、タイマーが満了したときに実行されるコールバック関数へのポインタです。この例では、`timer` という関数が指定されています。
-    // 3. int value: 3番目の引数は、コールバック関数に渡される整数値です。この例では、`0` が指定されています。
-    glutTimerFunc(0, timer, 0);
     // 無限ループで, プログラムはイベントの待ち受け状態になる
     glutMainLoop();
     return 0;
