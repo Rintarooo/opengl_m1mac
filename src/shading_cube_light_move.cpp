@@ -72,7 +72,8 @@ void display() {
     // 同次座標系
     // float light_pos[4]
     // light_pos[3]=0だと、平行光線。light_pos[3]=1だと、放射状の光線。
-	float light_pos[4] ={5.0f, 5.0f, 5.0f, .0f};
+	// float light_pos[4] ={5.0f, 5.0f, 5.0f, 1.0f};
+	float light_pos[4] ={5.0 * cos(angle), 5.0, 5.0 * sin(angle), 1.0f};
     // 光源の位置の定義
 	glLightfv(GL_LIGHT0, GL_POSITION, light_pos);// GL_LIGHT0が光源の名前
 	// 照明の点灯．
@@ -163,6 +164,27 @@ void initGL() {
     // glMatrixMode(GL_MODELVIEW);
 }
 
+
+void timer(int value) {
+    // angle += 0.02f; // カメラの回転速度を2倍にする
+    angle += 0.10;
+
+    // 角度 angle から 2π（360度）を減算して、角度を 0 から 2π の範囲に戻します。
+    // これにより、角度が無限に大きくならず、常に一周の範囲内で回転することが保証されます。
+    if (angle > 2 * M_PI) {
+        angle -= 2 * M_PI;
+    }
+
+    // 要するに、`glutDisplayFunc(display); は display` 関数を描画のコールバック関数として登録する役割があり、
+    // `glutPostRedisplay(); は登録された display` コールバック関数を呼び出してウィンドウを再描画する役割があります。
+    // 両者は連携して、ウィンドウの描画と更新を適切に行うことができます。
+    glutPostRedisplay();
+    // この例では、`glutTimerFunc(16, timer, 0); としています。つまり、16ミリ秒後に timer` 関数が再び実行され、
+    // この例では、16ミリ秒ごとに timer 関数が実行されるため、約60FPS（1秒間に約60回の更新）のアニメーションが実現されます。
+    glutTimerFunc(16, timer, 0);
+}
+
+
 int main(int argc, char** argv) {
     glutInit(&argc, argv);
     // - フロントバッファ: 現在画面に表示されている画像を保持しているバッファ
@@ -179,6 +201,12 @@ int main(int argc, char** argv) {
     glutDisplayFunc(display);
 
     glutReshapeFunc(resize);
+
+    // 1. unsigned int millis: 最初の引数は、コールバック関数が実行されるまでの待機時間（ミリ秒単位）を指定します。この例では、`0` が指定されているため、コールバック関数は即座に実行されます。
+    // 2. void (*func)(int value): 2番目の引数は、タイマーが満了したときに実行されるコールバック関数へのポインタです。この例では、`timer` という関数が指定されています。
+    // 3. int value: 3番目の引数は、コールバック関数に渡される整数値です。この例では、`0` が指定されています。
+    glutTimerFunc(0, timer, 0);
+
     // 無限ループで, プログラムはイベントの待ち受け状態になる
     glutMainLoop();
     return 0;
